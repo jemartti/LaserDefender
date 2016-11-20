@@ -3,7 +3,24 @@ using System.Collections;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-	private float health = 150f;
+	public GameObject projectile;
+	public float projectileSpeed;
+	public float shotsPerSecond = 0.5f;
+	public float health = 150f;
+
+	void Update ()
+	{
+		float probability = shotsPerSecond * Time.deltaTime;
+		if (Random.value < probability) {
+			Fire ();
+		}
+	}
+
+	void Fire ()
+	{
+		GameObject missile = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
+		missile.rigidbody2D.velocity = new Vector3 (0f, projectileSpeed * -1f, 0f);
+	}
 
 	void OnTriggerEnter2D (Collider2D collider)
 	{
