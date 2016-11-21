@@ -5,7 +5,8 @@ public class Projectile : MonoBehaviour
 {
 	public float damage = 100f;
 
-	public float GetDamage () {
+	public float GetDamage ()
+	{
 		return damage;
 	}
 
