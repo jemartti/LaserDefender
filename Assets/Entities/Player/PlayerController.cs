@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	public float projectileSpeed;
 	public float firingRate = 0.2f;
 	public float health = 1000f;
+	public AudioClip fireSound;
 	private float xMin;
 	private float xMax;
 
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
 	{
 		GameObject beam = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 		beam.rigidbody2D.velocity = new Vector3 (0f, projectileSpeed, 0f);
+		AudioSource.PlayClipAtPoint (fireSound, transform.position);
 	}
 
 	void OnTriggerEnter2D (Collider2D collider)
