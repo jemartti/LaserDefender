@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MusicPlayer : MonoBehaviour
@@ -8,8 +9,8 @@ public class MusicPlayer : MonoBehaviour
 	public AudioClip gameClip;
 	public AudioClip endClip;
 	private AudioSource music;
-	
-	void Start ()
+
+	void Awake ()
 	{
 		if (instance != null && instance != this) {
 			Destroy (gameObject);
@@ -18,20 +19,27 @@ public class MusicPlayer : MonoBehaviour
 			instance = this;
 			GameObject.DontDestroyOnLoad (gameObject);
 			music = GetComponent<AudioSource> ();
-			music.clip = startClip;
-			music.loop = true;
-			music.Play ();
 		}
 	}
 
-	void OnLevelWasLoaded (int level)
+	void OnEnable ()
+	{
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
+
+	void OnDisable ()
+	{
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+
+	void OnLevelFinishedLoading (Scene scene, LoadSceneMode mode)
 	{
 		music.Stop ();
-		if (level == 0) {
+		if (scene.buildIndex == 0) {
 			music.clip = startClip;
-		} else if (level == 1) {
+		} else if (scene.buildIndex == 1) {
 			music.clip = gameClip;
-		} else if (level == 2) {
+		} else if (scene.buildIndex == 2) {
 			music.clip = endClip;
 		}
 		music.loop = true;
